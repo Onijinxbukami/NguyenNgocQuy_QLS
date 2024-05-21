@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 @Controller
 @RequestMapping("/books")
@@ -18,6 +19,12 @@ public class BookController {
     public String showAllBooks(@NotNull Model model) {
         model.addAttribute("books", bookService.getAllBooks());
         return "book/list";
+    }
+
+    @GetMapping("/search") // Remove "/books" from the mapping
+    @ResponseBody
+    public List<Book> searchBooks(@RequestParam String query) {
+        return bookService.searchBooks(query);
     }
 
     @GetMapping("/add")

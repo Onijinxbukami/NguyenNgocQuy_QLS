@@ -15,28 +15,23 @@
     <form th:action="@{/books/add}" th:object="${book}" method="post">
         <div class="col-6 mb-3">
             <label class="form-label" for="id">Id:</label>
-            <input class="form-control" type="text" th:field="*{id}" id="id">
+            <input class="form-control" type="text" th:field="*{id}" id="id" pattern="\d+" title="Id should be a number" required>
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="title">Title:</label>
-            <input class="form-control" type="text" th:field="*{title}"
-                   id="title">
+            <input class="form-control" type="text" th:field="*{title}" id="title" required>
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="author">Author:</label>
-            <input class="form-control" type="text" th:field="*{author}"
-                   id="author">
+            <input class="form-control" type="text" th:field="*{author}" id="author" required>
         </div>
         <div class="col-6 mb-3">
-
             <label class="form-label" for="price">Price:</label>
-            <input class="form-control" type="text" th:field="*{price}"
-                   id="price">
+            <input class="form-control" type="number" th:field="*{price}" id="price" step="any" title="Price should be a number" required>
         </div>
         <div class="col-6 mb-3">
             <label class="form-label" for="category">Category:</label>
-            <input class="form-control" type="text" th:field="*{category}"
-                   id="category">
+            <input class="form-control" type="text" th:field="*{category}" id="category" pattern="[A-Za-z\s]+" title="Category should be letters only" required>
         </div>
         <input type="submit" class="btn btn-primary" value="Save">
     </form>

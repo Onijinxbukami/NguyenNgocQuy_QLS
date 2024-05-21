@@ -11,7 +11,7 @@
 <body>
 <th:block th:replace="~{layout::header}"></th:block>
 <div class="container">
-
+    <input type="text" id="searchInput" class="form-control mb-3" placeholder="Nhập tên sách...">
     <table class="table">
         <tr>
             <th>ID</th>
@@ -21,6 +21,7 @@
             <th>Category</th>
             <th>Action</th>
         </tr>
+        <tbody id="bookList">
         <tr th:each="book : ${books}">
             <td th:text="${book.getId()}"></td>
             <td th:text="${book.getTitle()}"></td>
@@ -38,5 +39,51 @@
     </table>
 </div>
 <th:block th:replace="~{layout::footer}"></th:block>
+<script>
+    $(document).ready(function () {
+        // Generate HTML for each book and append to the bookList tbody
+        function generateBookHtml(book) {
+            return `
+                <tr>
+                    <td>${book.id}</td>
+                    <td>${book.title}</td>
+                    <td>${book.author}</td>
+                    <td>${book.price}</td>
+                    <td>${book.category}</td>
+                    <td colspan="2">
+                        <a class="btn btn-primary" href="/books/edit/${book.id}">Edit</a>
+                        <a class="btn btn-danger" href="/books/delete/${book.id}" onclick="return confirm('Are you sure you want to delete this book?')">Delete</a>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function renderBooks(books) {
+            $('#bookList').empty();
+            books.forEach(function (book) {
+                $('#bookList').append(generateBookHtml(book));
+            });
+        }
+
+        // Search functionality
+        $('#searchInput').on('input', function () {
+            var searchText = $(this).val().toLowerCase();
+
+            // Make an AJAX request to the search endpoint
+            $.ajax({
+                url: '/books/search',
+                type: 'GET',
+                data: { query: searchText },
+                success: function (books) {
+                    renderBooks(books);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching books:', error);
+                }
+            });
+        });
+    });
+</script>
 </body>
+
 </html>

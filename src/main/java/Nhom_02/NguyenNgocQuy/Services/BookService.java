@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import  java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,11 @@ public class BookService {
     }
     public void addBook(Book book) {
         books.add(book);
+    }
+    public List<Book> searchBooks(String query) {
+        return books.stream()
+                .filter(book -> book.getTitle().toLowerCase().contains(query.toLowerCase()))
+                .collect(Collectors.toList());
     }
     public void updateBook(Book book) {
         var bookOptional = getBookById(book.getId());
